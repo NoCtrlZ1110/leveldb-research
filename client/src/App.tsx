@@ -34,13 +34,26 @@ const insertDataByKey = (
 const deleteDataByKey = (socket: SocketIOClient.Socket, key: string) => {
   socket.emit('delData', key);
 };
+const autoInsertData = (socket: SocketIOClient.Socket, amount: number) => {
+  socket.emit('autoInsert', amount);
+};
+
 const App = () => {
   const [response, setResponse] = useState('output here!');
+  const [count, setCount] = useState(0);
+  const [length, setLength] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [socket, setSocket] = useState(socketIOClient(ENDPOINT));
 
   useEffect(() => {
     socket.on('log', (data: any) => {
-      setResponse(data);
+      setResponse(JSON.stringify(data));
+    });
+    socket.on('logCount', (data: number) => {
+      setCount(data);
+    });
+    socket.on('length', (data: number) => {
+      setLength(data);
     });
   }, [socket]);
 
@@ -91,7 +104,7 @@ const App = () => {
             </Menu>
           </Sider>
           <Content style={{ padding: '0 24px' }}>
-            {Body(response, socket)}
+            {Body(response, socket, count, length)}
           </Content>
         </Layout>
       </Content>
@@ -102,8 +115,13 @@ const App = () => {
   );
 };
 
-const Body = (response: string, socket: SocketIOClient.Socket) => {
-  const [amount, setAmount] = useState();
+const Body = (
+  response: string,
+  socket: SocketIOClient.Socket,
+  count: number,
+  length: number
+) => {
+  const [amount, setAmount] = useState(1);
   const [keyGet, setKeyGet] = useState('');
   const [keyPut, setKeyPut] = useState('');
   const [putData, setputData] = useState('');
@@ -124,7 +142,7 @@ const Body = (response: string, socket: SocketIOClient.Socket) => {
               value={amount}
               min={1}
               max={100000000}
-              defaultValue={0}
+              defaultValue={1}
               onChange={onChange}
               style={{ minWidth: '300px', marginRight: 20, marginTop: 20 }}
             />
@@ -133,6 +151,7 @@ const Body = (response: string, socket: SocketIOClient.Socket) => {
               type="primary"
               className="btn-secondary"
               style={{ minWidth: '200px', marginRight: 20, marginTop: 20 }}
+              onClick={() => autoInsertData(socket, amount)}
             >
               Insert
             </Button>
@@ -216,10 +235,19 @@ const Body = (response: string, socket: SocketIOClient.Socket) => {
       </Space>
       <Space direction="vertical" style={{ marginLeft: 100 }}>
         <Card
-          title="Output"
-          style={{ minWidth: 600, minHeight: 500, fontSize: 20 }}
+          title={
+            'Output ' +
+            (count !== 0
+              ? `[#${count}/${length} ~ ${
+                  Math.round((count / length) * 100 * 100) / 100
+                }%]`
+              : '')
+          }
+          style={{ minWidth: 600, maxWidth: 600, minHeight: 500, fontSize: 20 }}
         >
-          <code>{response}</code>
+          <p>
+            <code style={{ maxWidth: 100 }}>{response}</code>
+          </p>
         </Card>
       </Space>
     </>
