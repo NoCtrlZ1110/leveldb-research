@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Layout,
   Menu,
@@ -16,16 +16,34 @@ import {
   NotificationOutlined,
 } from '@ant-design/icons';
 import './App.css';
+import socketIOClient from 'socket.io-client';
+const ENDPOINT = 'http://localhost:3005/socket';
 
 const { SubMenu } = Menu;
-const {
-  Header,
-  Content,
-  // Footer,
-  Sider,
-} = Layout;
+const { Header, Content, Sider } = Layout;
+const getDataByKey = (socket: SocketIOClient.Socket, key: string) => {
+  socket.emit('getData', key);
+};
+const insertDataByKey = (
+  socket: SocketIOClient.Socket,
+  key: string,
+  data: string
+) => {
+  socket.emit('putData', key, data);
+};
+const deleteDataByKey = (socket: SocketIOClient.Socket, key: string) => {
+  socket.emit('delData', key);
+};
+const App = () => {
+  const [response, setResponse] = useState('output here!');
+  const [socket, setSocket] = useState(socketIOClient(ENDPOINT));
 
-function App() {
+  useEffect(() => {
+    socket.on('log', (data: any) => {
+      setResponse(data);
+    });
+  }, [socket]);
+
   return (
     <Layout>
       <Header className="header text-white">
@@ -72,7 +90,9 @@ function App() {
               </SubMenu>
             </Menu>
           </Sider>
-          <Content style={{ padding: '0 24px' }}>{Body()}</Content>
+          <Content style={{ padding: '0 24px' }}>
+            {Body(response, socket)}
+          </Content>
         </Layout>
       </Content>
       {/* <Footer style={{ textAlign: 'center' }}>
@@ -80,10 +100,14 @@ function App() {
       </Footer> */}
     </Layout>
   );
-}
+};
 
-const Body = () => {
+const Body = (response: string, socket: SocketIOClient.Socket) => {
   const [amount, setAmount] = useState();
+  const [keyGet, setKeyGet] = useState('');
+  const [keyPut, setKeyPut] = useState('');
+  const [putData, setputData] = useState('');
+  const [keyDel, setKeyDel] = useState('');
 
   const onChange = (value: any) => {
     setAmount(value);
@@ -122,12 +146,17 @@ const Body = () => {
                 <Input
                   addonBefore="Key"
                   placeholder='"name","age"'
+                  value={keyGet}
+                  onChange={(e) => setKeyGet(e.target.value as string)}
                   style={{ minWidth: 270 }}
                 />
                 <Button
                   type="primary"
                   className="btn-success"
                   style={{ minWidth: '200px', marginLeft: 20 }}
+                  onClick={() => {
+                    getDataByKey(socket, keyGet);
+                  }}
                 >
                   Get
                 </Button>
@@ -139,12 +168,16 @@ const Body = () => {
                   <Input
                     addonBefore="Key"
                     placeholder='"name","age"'
+                    onChange={(e) => setKeyPut(e.target.value as string)}
                     style={{ minWidth: 270 }}
                   />
                   <Button
                     type="primary"
                     className="btn-success"
                     style={{ minWidth: '200px', marginLeft: 20 }}
+                    onClick={() => {
+                      insertDataByKey(socket, keyPut, putData);
+                    }}
                   >
                     Insert
                   </Button>
@@ -154,6 +187,7 @@ const Body = () => {
                   addonBefore="Data"
                   placeholder="Nguyễn Văn Huy"
                   style={{ minWidth: 270 }}
+                  onChange={(e) => setputData(e.target.value as string)}
                 />
               </Space>
             </Card>
@@ -163,11 +197,15 @@ const Body = () => {
                   addonBefore="Key"
                   placeholder='"name","age"'
                   style={{ minWidth: 270 }}
+                  onChange={(e) => setKeyDel(e.target.value as string)}
                 />
                 <Button
                   type="primary"
                   danger
                   style={{ minWidth: '200px', marginLeft: 20 }}
+                  onClick={() => {
+                    deleteDataByKey(socket, keyDel);
+                  }}
                 >
                   Delete
                 </Button>
@@ -177,8 +215,11 @@ const Body = () => {
         </Card>
       </Space>
       <Space direction="vertical" style={{ marginLeft: 100 }}>
-        <Card title="Output" style={{ minWidth: 600, minHeight: 500 }}>
-          <code>output here!</code>
+        <Card
+          title="Output"
+          style={{ minWidth: 600, minHeight: 500, fontSize: 20 }}
+        >
+          <code>{response}</code>
         </Card>
       </Space>
     </>

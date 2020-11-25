@@ -21,6 +21,29 @@ app.use(cookieParser());
 
 const favicon = require('express-favicon');
 
+// cài đặt cors
+var cors = require('cors');
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, Content-Type, X-Auth-Token'
+  );
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+app.use(
+  cors({
+    origin: ['*'],
+    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
+    credentials: true, // enable set cookie
+  })
+);
+
 app.use(favicon(__dirname + '/../client/build/favicon.ico'));
 app.use(express.static(__dirname + '/../client/build'));
 app.use(express.static(path.join(__dirname + '/../client/build', 'build')));
