@@ -7,6 +7,8 @@ import {
   Row,
   InputNumber,
   Space,
+  Card,
+  Input,
 } from 'antd';
 import {
   UserOutlined,
@@ -16,7 +18,12 @@ import {
 import './App.css';
 
 const { SubMenu } = Menu;
-const { Header, Content, Footer, Sider } = Layout;
+const {
+  Header,
+  Content,
+  // Footer,
+  Sider,
+} = Layout;
 
 function App() {
   return (
@@ -68,9 +75,9 @@ function App() {
           <Content style={{ padding: '0 24px' }}>{Body()}</Content>
         </Layout>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>
+      {/* <Footer style={{ textAlign: 'center' }}>
         [Nhóm 17] - Nguyễn Văn Huy - Ngô Văn Hào - Phan Văn Minh
-      </Footer>
+      </Footer> */}
     </Layout>
   );
 }
@@ -84,25 +91,96 @@ const Body = () => {
 
   return (
     <>
-      <b>Nhập số lượng bản ghi muốn lưu vào database</b>
-      <Space></Space>
-      <Row>
-        <InputNumber
-          value={amount}
-          min={1}
-          max={100000000}
-          defaultValue={0}
-          onChange={onChange}
-          style={{ minWidth: '300px', marginRight: 20, marginTop: 20 }}
-        />
-        <Button
-          type="primary"
-          danger
-          style={{ minWidth: '200px', marginRight: 20, marginTop: 20 }}
-        >
-          Import
-        </Button>
-      </Row>
+      <Space direction="vertical" style={{ marginLeft: 100 }}>
+        <Card title="Tự động">
+          <b>Nhập số lượng bản ghi muốn lưu vào database</b>
+
+          <Row>
+            <InputNumber
+              value={amount}
+              min={1}
+              max={100000000}
+              defaultValue={0}
+              onChange={onChange}
+              style={{ minWidth: '300px', marginRight: 20, marginTop: 20 }}
+            />
+
+            <Button
+              type="primary"
+              className="btn-secondary"
+              style={{ minWidth: '200px', marginRight: 20, marginTop: 20 }}
+            >
+              Insert
+            </Button>
+          </Row>
+        </Card>
+        <Space />
+        <Card title="Thủ công">
+          <Space direction="vertical">
+            <Card title="Get data by key">
+              <Space align="center">
+                <Input
+                  addonBefore="Key"
+                  placeholder='"name","age"'
+                  style={{ minWidth: 270 }}
+                />
+                <Button
+                  type="primary"
+                  className="btn-success"
+                  style={{ minWidth: '200px', marginLeft: 20 }}
+                >
+                  Get
+                </Button>
+              </Space>
+            </Card>
+            <Card title="Insert data by key">
+              <Space direction="vertical">
+                <Space align="center">
+                  <Input
+                    addonBefore="Key"
+                    placeholder='"name","age"'
+                    style={{ minWidth: 270 }}
+                  />
+                  <Button
+                    type="primary"
+                    className="btn-success"
+                    style={{ minWidth: '200px', marginLeft: 20 }}
+                  >
+                    Insert
+                  </Button>
+                </Space>
+
+                <Input
+                  addonBefore="Data"
+                  placeholder="Nguyễn Văn Huy"
+                  style={{ minWidth: 270 }}
+                />
+              </Space>
+            </Card>
+            <Card title="Delete data by key">
+              <Space align="center">
+                <Input
+                  addonBefore="Key"
+                  placeholder='"name","age"'
+                  style={{ minWidth: 270 }}
+                />
+                <Button
+                  type="primary"
+                  danger
+                  style={{ minWidth: '200px', marginLeft: 20 }}
+                >
+                  Delete
+                </Button>
+              </Space>
+            </Card>
+          </Space>
+        </Card>
+      </Space>
+      <Space direction="vertical" style={{ marginLeft: 100 }}>
+        <Card title="Output" style={{ minWidth: 600, minHeight: 500 }}>
+          <code>output here!</code>
+        </Card>
+      </Space>
     </>
   );
 };

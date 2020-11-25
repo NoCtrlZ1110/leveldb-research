@@ -18,3 +18,24 @@
 .ant-layout-content{
   min-height: 75vh!important;
 }
+
+.ant-card-head-title {
+  font-size: large;
+  font-weight: bold;
+
+ 
+} 
+
+.ant-card-body .ant-card-head-title{
+  font-size: small;
+  font-weight:600 ;
+
+  }
+
+.ant-input-group-addon{
+  min-width: 60px;
+}
+
+.ant-card-body {
+  padding: 22px!important;
+}
