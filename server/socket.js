@@ -22,9 +22,19 @@ module.exports = (server) => {
       },
       number > 999999 ? 500 : 100
     );
+
+    let errMsg = null;
+
     let readStream = fs
-      .createReadStream('./dataset/ratings.csv')
+      .createReadStream('./dataset/out.csv')
+      .on('error', (err) => {
+        console.log('ERR' + err.message);
+        socket.emit('log', err.message);
+        errMsg = err.message;
+        readStream.end();
+      })
       .pipe(csv())
+
       .on('data', (row) => {
         count++;
         data = row;
@@ -34,10 +44,12 @@ module.exports = (server) => {
           readStream.end();
         }
       })
+
       .on('end', () => {
-        console.log('CSV file successfully processed');
+        console.log('End stream!');
         clearInterval(logInfo);
-        socket.emit('log', 'Import successfully ' + number + ' records!');
+        if (errMsg) return;
+        else socket.emit('log', 'Import successfully ' + number + ' records!');
       });
   };
 

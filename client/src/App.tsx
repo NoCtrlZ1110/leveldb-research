@@ -59,7 +59,7 @@ const App = () => {
 
   return (
     <Layout>
-      <Header className="header text-white">
+      <Header className='header text-white'>
         HỆ QUẢN TRỊ CƠ SỞ DỮ LIỆU - DBMS - LEVEL DB
       </Header>
       <Content style={{ padding: '0 50px' }}>
@@ -69,37 +69,37 @@ const App = () => {
           <Breadcrumb.Item>Nhóm 17</Breadcrumb.Item>
         </Breadcrumb>
         <Layout
-          className="site-layout-background"
+          className='site-layout-background'
           style={{ padding: '24px 0' }}
         >
-          <Sider className="site-layout-background" width={200}>
+          <Sider className='site-layout-background' width={200}>
             <Menu
-              mode="inline"
+              mode='inline'
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub1']}
               style={{ height: '100%' }}
             >
-              <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                <Menu.Item key="1">option1</Menu.Item>
-                <Menu.Item key="2">option2</Menu.Item>
-                <Menu.Item key="3">option3</Menu.Item>
-                <Menu.Item key="4">option4</Menu.Item>
+              <SubMenu key='sub1' icon={<UserOutlined />} title='subnav 1'>
+                <Menu.Item key='1'>option1</Menu.Item>
+                <Menu.Item key='2'>option2</Menu.Item>
+                <Menu.Item key='3'>option3</Menu.Item>
+                <Menu.Item key='4'>option4</Menu.Item>
               </SubMenu>
-              <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                <Menu.Item key="5">option5</Menu.Item>
-                <Menu.Item key="6">option6</Menu.Item>
-                <Menu.Item key="7">option7</Menu.Item>
-                <Menu.Item key="8">option8</Menu.Item>
+              <SubMenu key='sub2' icon={<LaptopOutlined />} title='subnav 2'>
+                <Menu.Item key='5'>option5</Menu.Item>
+                <Menu.Item key='6'>option6</Menu.Item>
+                <Menu.Item key='7'>option7</Menu.Item>
+                <Menu.Item key='8'>option8</Menu.Item>
               </SubMenu>
               <SubMenu
-                key="sub3"
+                key='sub3'
                 icon={<NotificationOutlined />}
-                title="subnav 3"
+                title='subnav 3'
               >
-                <Menu.Item key="9">option9</Menu.Item>
-                <Menu.Item key="10">option10</Menu.Item>
-                <Menu.Item key="11">option11</Menu.Item>
-                <Menu.Item key="12">option12</Menu.Item>
+                <Menu.Item key='9'>option9</Menu.Item>
+                <Menu.Item key='10'>option10</Menu.Item>
+                <Menu.Item key='11'>option11</Menu.Item>
+                <Menu.Item key='12'>option12</Menu.Item>
               </SubMenu>
             </Menu>
           </Sider>
@@ -133,8 +133,8 @@ const Body = (
 
   return (
     <>
-      <Space direction="vertical" style={{ marginLeft: 100 }}>
-        <Card title="Tự động">
+      <Space direction='vertical' style={{ marginLeft: 100 }}>
+        <Card title='Tự động'>
           <b>Nhập số lượng bản ghi muốn lưu vào database</b>
 
           <Row>
@@ -148,8 +148,8 @@ const Body = (
             />
 
             <Button
-              type="primary"
-              className="btn-secondary"
+              type='primary'
+              className='btn-secondary'
               style={{ minWidth: '200px', marginRight: 20, marginTop: 20 }}
               onClick={() => autoInsertData(socket, amount)}
             >
@@ -158,20 +158,20 @@ const Body = (
           </Row>
         </Card>
         <Space />
-        <Card title="Thủ công">
-          <Space direction="vertical">
-            <Card title="Get data by key">
-              <Space align="center">
+        <Card title='Thủ công'>
+          <Space direction='vertical'>
+            <Card title='Get data by key'>
+              <Space align='center'>
                 <Input
-                  addonBefore="Key"
+                  addonBefore='Key'
                   placeholder='"name","age"'
                   value={keyGet}
                   onChange={(e) => setKeyGet(e.target.value as string)}
                   style={{ minWidth: 270 }}
                 />
                 <Button
-                  type="primary"
-                  className="btn-success"
+                  type='primary'
+                  className='btn-success'
                   style={{ minWidth: '200px', marginLeft: 20 }}
                   onClick={() => {
                     getDataByKey(socket, keyGet);
@@ -181,18 +181,18 @@ const Body = (
                 </Button>
               </Space>
             </Card>
-            <Card title="Insert data by key">
-              <Space direction="vertical">
-                <Space align="center">
+            <Card title='Insert data by key'>
+              <Space direction='vertical'>
+                <Space align='center'>
                   <Input
-                    addonBefore="Key"
+                    addonBefore='Key'
                     placeholder='"name","age"'
                     onChange={(e) => setKeyPut(e.target.value as string)}
                     style={{ minWidth: 270 }}
                   />
                   <Button
-                    type="primary"
-                    className="btn-success"
+                    type='primary'
+                    className='btn-success'
                     style={{ minWidth: '200px', marginLeft: 20 }}
                     onClick={() => {
                       insertDataByKey(socket, keyPut, putData);
@@ -203,23 +203,23 @@ const Body = (
                 </Space>
 
                 <Input
-                  addonBefore="Data"
-                  placeholder="Nguyễn Văn Huy"
+                  addonBefore='Data'
+                  placeholder='Nguyễn Văn Huy'
                   style={{ minWidth: 270 }}
                   onChange={(e) => setputData(e.target.value as string)}
                 />
               </Space>
             </Card>
-            <Card title="Delete data by key">
-              <Space align="center">
+            <Card title='Delete data by key'>
+              <Space align='center'>
                 <Input
-                  addonBefore="Key"
+                  addonBefore='Key'
                   placeholder='"name","age"'
                   style={{ minWidth: 270 }}
                   onChange={(e) => setKeyDel(e.target.value as string)}
                 />
                 <Button
-                  type="primary"
+                  type='primary'
                   danger
                   style={{ minWidth: '200px', marginLeft: 20 }}
                   onClick={() => {
@@ -233,7 +233,7 @@ const Body = (
           </Space>
         </Card>
       </Space>
-      <Space direction="vertical" style={{ marginLeft: 100 }}>
+      <Space direction='vertical' style={{ marginLeft: 100 }}>
         <Card
           title={
             'Output ' +
