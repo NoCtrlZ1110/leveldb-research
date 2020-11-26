@@ -9,7 +9,7 @@ module.exports = (server) => {
 
   let countInserted = 0;
 
-  const autoInsert = (socket, number) => {
+  const autoInsert = (socket, number, prefix) => {
     let count = 0;
     let data = '';
     namespace.emit('length', number);
@@ -38,7 +38,7 @@ module.exports = (server) => {
       .on('data', (row) => {
         count++;
         data = row;
-        let key = 'level#' + count;
+        let key = prefix + count;
         insert(socket, key, row);
         if (count > number) {
           readStream.end();
@@ -49,7 +49,10 @@ module.exports = (server) => {
         console.log('End stream!');
         clearInterval(logInfo);
         if (errMsg) return;
-        else socket.emit('log', 'Import successfully ' + number + ' records!');
+        else {
+          socket.emit('log', 'Import successfully ' + number + ' records!');
+          namespace.emit('logCount', count);
+        }
       });
   };
 
@@ -94,6 +97,7 @@ module.exports = (server) => {
   };
 
   const handleConnection = (client) => {
+    client.emit('connection');
     console.log(`Client connected: ${client.id}`);
   };
 
@@ -115,9 +119,9 @@ module.exports = (server) => {
     socket.on('delData', (key) => {
       deleteDataByKey(socket, key);
     });
-    socket.on('autoInsert', (number) => {
+    socket.on('autoInsert', (number, prefix) => {
       countInserted = 0;
-      autoInsert(socket, number);
+      autoInsert(socket, number, prefix);
       console.log(number);
     });
 
