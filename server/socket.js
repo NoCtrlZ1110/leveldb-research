@@ -18,7 +18,11 @@ module.exports = (server) => {
       () => {
         namespace.emit('log', data);
         namespace.emit('logCount', countInserted);
-        console.log(count);
+        console.log(
+          `#[${count}/${number}] ~ ${
+            Math.round((count / number) * 100 * 100) / 100
+          }\t%`
+        );
       },
       number > 999999 ? 500 : 100
     );
@@ -98,11 +102,11 @@ module.exports = (server) => {
 
   const handleConnection = (client) => {
     client.emit('connection');
-    console.log(`Client connected: ${client.id}`);
+    // console.log(`Client connected: ${client.id}`);
   };
 
   const handleDisconnect = (client) => {
-    console.log(`Client disconnected: ${client.id}`);
+    // console.log(`Client disconnected: ${client.id}`);
   };
 
   namespace.on('connection', function (socket) {
