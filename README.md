@@ -1,6 +1,4 @@
-# Nhóm 17 - LevelDB Research 🔎
-```Nguyễn Văn Huy - Phan Văn Minh - Ngô Văn Hào```
-``` 18020651 - 18020916 - 18020459 ```
+# LevelDB Research 🔎
 ## How to test?
 
 Download dataset from here & extract `ratings.csv` to `server/dataset` & rename to `out.csv`
